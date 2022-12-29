@@ -21,4 +21,6 @@ class PatternModel {
         patternOriginGauge = json['patternOriginGauge'] ?? '',
         patternYarn = (json['patternYarn'] ?? []).map<String>((it) => it.toString()).toList(),
         patternGauge = json['patternGauge'] ?? '';
+
+  PatternModel();
 }
