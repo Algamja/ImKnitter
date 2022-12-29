@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:im_knitter/provider/pattern_list_provider.dart';
-import 'package:im_knitter/screen/pattern_list.dart';
+import 'package:im_knitter/screen/pattern_list_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {

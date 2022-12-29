@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:im_knitter/enum/filter_type.dart';
 import 'package:im_knitter/provider/pattern_list_provider.dart';
 import 'package:im_knitter/style/app_color.dart';
-import 'package:im_knitter/widget/common/custom_appbar.dart';
-import 'package:im_knitter/widget/common/search_bar.dart';
-import 'package:im_knitter/widget/common/small_img_list_item.dart';
+import 'package:im_knitter/widget/common/custom_appbar_widget.dart';
+import 'package:im_knitter/widget/common/search_bar_widget.dart';
+import 'package:im_knitter/widget/common/small_img_list_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class PatternListScreen extends StatefulWidget {
