@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:im_knitter/model/pattern_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:im_knitter/provider/pattern_save_provider.dart';
 import 'package:im_knitter/style/app_color.dart';
 import 'package:im_knitter/widget/common/custom_appbar_widget.dart';
@@ -19,6 +19,13 @@ class PatternSaveScreen extends StatefulWidget {
 class _PatternSaveScreenState extends State<PatternSaveScreen> {
   late PatternSaveProvider _patternSaveProvider;
 
+  TextEditingController patternNameController = TextEditingController();
+  TextEditingController patternShopLinkController = TextEditingController();
+  TextEditingController patternWriterController = TextEditingController();
+  TextEditingController patternPriceController = TextEditingController();
+  TextEditingController patternOriginGaugeController = TextEditingController();
+  TextEditingController patternGaugeController = TextEditingController();
+
   final ImagePicker _picker = ImagePicker();
 
   bool isNew = true;
@@ -28,9 +35,19 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
     super.initState();
 
     _patternSaveProvider = Provider.of<PatternSaveProvider>(context, listen: false);
-    if (widget.patternKey != null) {
-      _patternSaveProvider.getPattern(widget.patternKey!);
-    }
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      if (widget.patternKey != null) {
+        await _patternSaveProvider.getPattern(widget.patternKey!);
+
+        patternNameController.text = _patternSaveProvider.newPattern.patternName;
+        patternShopLinkController.text = _patternSaveProvider.newPattern.patternShopLink;
+        patternWriterController.text = _patternSaveProvider.newPattern.patternWriter;
+        patternPriceController.text = _patternSaveProvider.newPattern.patternPrice;
+        patternOriginGaugeController.text = _patternSaveProvider.newPattern.patternOriginGauge;
+        patternGaugeController.text = _patternSaveProvider.newPattern.patternGauge;
+        isNew = false;
+      }
+    });
   }
 
   @override
@@ -132,7 +149,10 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                               fit: BoxFit.cover,
                             )
                           : patternProvider.pattern.patternImg.isNotEmpty
-                              ? Image.network(patternProvider.pattern.patternImg)
+                              ? Image.network(
+                                  patternProvider.pattern.patternImg,
+                                  fit: BoxFit.cover,
+                                )
                               : Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black),
@@ -147,6 +167,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 23.0),
                   TextFormField(
+                    controller: patternNameController,
                     decoration: const InputDecoration(
                       hintText: '패턴 이름',
                       hintStyle: TextStyle(
@@ -159,6 +180,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   TextFormField(
+                    controller: patternShopLinkController,
                     decoration: const InputDecoration(
                       hintText: '구매처',
                       hintStyle: TextStyle(
@@ -171,6 +193,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   TextFormField(
+                    controller: patternWriterController,
                     decoration: const InputDecoration(
                       hintText: '패턴 작가 이름',
                       hintStyle: TextStyle(
@@ -183,6 +206,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   TextFormField(
+                    controller: patternPriceController,
                     decoration: const InputDecoration(
                       hintText: '가격',
                       hintStyle: TextStyle(
@@ -246,6 +270,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   TextFormField(
+                    controller: patternOriginGaugeController,
                     decoration: const InputDecoration(
                       hintText: '원작 게이지',
                       hintStyle: TextStyle(
@@ -309,6 +334,7 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   TextFormField(
+                    controller: patternGaugeController,
                     decoration: const InputDecoration(
                       hintText: '게이지',
                       hintStyle: TextStyle(
@@ -323,8 +349,10 @@ class _PatternSaveScreenState extends State<PatternSaveScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () {
-                        patternProvider.setPattern();
+                      onTap: () async {
+                        await patternProvider.setPattern();
+                        Fluttertoast.showToast(msg: '${isNew ? '저장' : '수정'}되었습니다.');
+                        Navigator.pop(context);
                       },
                       child: Container(
                         alignment: Alignment.center,

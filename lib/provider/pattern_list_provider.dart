@@ -4,13 +4,14 @@ import 'package:im_knitter/enum/filter_type.dart';
 import 'package:im_knitter/model/pattern_model.dart';
 
 class PatternListProvider extends ChangeNotifier {
-  final List<PatternModel> _patterns = [];
-  final List<PatternModel> _searchedPatterns = [];
+  final Map<String, PatternModel> _patterns = {};
+  final Map<String, PatternModel> _searchedPatterns = {};
   bool _searched = false;
+  String _searchedText = '';
   FilterType _filterType = FilterType.newest;
 
-  List<PatternModel> get patterns => _patterns;
-  List<PatternModel> get searchedPatterns => _searchedPatterns;
+  Map<String, PatternModel> get patterns => _patterns;
+  Map<String, PatternModel> get searchedPatterns => _searchedPatterns;
   bool get searched => _searched;
   FilterType get filterType => _filterType;
 
@@ -34,7 +35,7 @@ class PatternListProvider extends ChangeNotifier {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
         PatternModel patternModel = PatternModel.fromJson(data);
 
-        _patterns.add(patternModel);
+        _patterns[snapshot.key!] = patternModel;
       }
     }
     notifyListeners();
@@ -46,20 +47,29 @@ class PatternListProvider extends ChangeNotifier {
     if (searchText.isNotEmpty) {
       // 검색 상태를 검색중으로 변경한다.
       _searched = true;
+      _searchedText = searchText;
       _searchedPatterns.clear();
       final ref = FirebaseDatabase.instance.ref();
 
       // DB에서 우선 모든 데이터를 가지고 온다.
-      final snapshot = await ref.child('patterns').get();
+      final snapshots = await ref.child('patterns').orderByKey().get();
 
-      if (snapshot.exists) {
-        for (var msgSnapshot in snapshot.children) {
-          final data = Map<String, dynamic>.from(msgSnapshot.value as Map);
+      if (snapshots.exists) {
+        List<DataSnapshot> datas = [];
+        if (_filterType == FilterType.newest) {
+          datas = snapshots.children.toList();
+          datas = datas.reversed.toList();
+        } else {
+          datas = snapshots.children.toList();
+        }
+
+        for (var snapshot in datas) {
+          final data = Map<String, dynamic>.from(snapshot.value as Map);
           PatternModel patternModel = PatternModel.fromJson(data);
 
           // 패턴 이름 중에서 겹치는 내용이 있는 데이터만 저장한다.
           if (patternModel.patternName.toLowerCase().contains(searchText.toLowerCase())) {
-            _searchedPatterns.add(patternModel);
+            _searchedPatterns[snapshot.key!] = patternModel;
           }
         }
       }
@@ -75,6 +85,8 @@ class PatternListProvider extends ChangeNotifier {
 
   void changeFilter(FilterType type) {
     _filterType = type;
+
+    searchPatterns(_searchedText);
     getPatterns();
   }
 }

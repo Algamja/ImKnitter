@@ -25,18 +25,20 @@ class PatternSaveProvider extends ChangeNotifier {
     final snapshots = await ref.child('patterns/$patternKey').get();
 
     if (snapshots.exists) {
-      DataSnapshot snapshot = snapshots.children.toList().first;
-      final data = Map<String, dynamic>.from(snapshot.value as Map);
+      final data = Map<String, dynamic>.from(snapshots.value as Map);
       _pattern = PatternModel.fromJson(data);
-      _newPattern = _pattern;
+      _newPattern = PatternModel.fromJson(data);
       _originPatternKey = patternKey;
     }
+
     notifyListeners();
   }
 
   Future<void> setPattern() async {
     String key = _originPatternKey.isEmpty ? DateFormat('yyyyMMddHHmmss').format(DateTime.now()) : _originPatternKey;
     DatabaseReference ref = FirebaseDatabase.instance.ref("patterns/$key");
+
+    // 임시 이미지
     String imgUrl =
         'https://firebasestorage.googleapis.com/v0/b/imknitter.appspot.com/o/KakaoTalk_Photo_2022-12-29-13-33-59.jpeg?alt=media&token=32c79d63-6437-4697-aa21-8a304cb581d7';
 
@@ -48,12 +50,12 @@ class PatternSaveProvider extends ChangeNotifier {
       "patternGauge": _newPattern.patternGauge,
       "patternName": _newPattern.patternName,
       "patternOriginGauge": _newPattern.patternOriginGauge,
-      "patternOriginYarn": _newPattern.patternOriginYarn,
+      "patternOriginYarn": _newPattern.patternOriginYarn.isEmpty ? {} : _newPattern.patternOriginYarn,
       "patternPrice": _newPattern.patternPrice,
       "patternShopLink": _newPattern.patternShopLink,
       "patternWriter": _newPattern.patternWriter,
       "patternWriterLink": "",
-      "patternYarn": _newPattern.patternYarn,
+      "patternYarn": _newPattern.patternYarn.isEmpty ? {} : _newPattern.patternYarn,
       "patternImg": imgUrl,
     });
   }

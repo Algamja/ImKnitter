@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:im_knitter/enum/filter_type.dart';
+import 'package:im_knitter/provider/pattern_detail_provider.dart';
 import 'package:im_knitter/provider/pattern_list_provider.dart';
 import 'package:im_knitter/provider/pattern_save_provider.dart';
+import 'package:im_knitter/screen/pattern_detail_screen.dart';
 import 'package:im_knitter/screen/pattern_save_screen.dart';
 import 'package:im_knitter/style/app_color.dart';
 import 'package:im_knitter/widget/common/custom_appbar_widget.dart';
@@ -42,33 +44,35 @@ class _PatternListScreenState extends State<PatternListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(63.0),
-        child: CustomAppbarWidget(title: '패턴 목록'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider(
-                create: (_) => PatternSaveProvider(),
-                child: const PatternSaveScreen(),
-              ),
-            ),
-          );
-        },
-        backgroundColor: AppColors.pointColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+    return Consumer<PatternListProvider>(
+      builder: (context, patternProvider, child) => Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(63.0),
+          child: CustomAppbarWidget(title: '패턴 목록'),
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Consumer<PatternListProvider>(
-            builder: (context, patternProvider, child) => Column(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (_) => PatternSaveProvider(),
+                  child: const PatternSaveScreen(),
+                ),
+              ),
+            );
+
+            patternProvider.getPatterns();
+          },
+          backgroundColor: AppColors.pointColor,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
                 // 검색바
                 SearchBarWidget(
@@ -114,28 +118,54 @@ class _PatternListScreenState extends State<PatternListScreen> {
                 // 패턴 리스트
                 patternProvider.searched
                     ? Column(
-                        children: List.generate(patternProvider.searchedPatterns.length, (index) {
+                        children: patternProvider.searchedPatterns.keys.map((patternKey) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                             child: SmallImgListItemWidget(
-                              imgUrl: patternProvider.searchedPatterns[index].patternImg,
-                              title: patternProvider.searchedPatterns[index].patternName,
-                              body: patternProvider.searchedPatterns[index].patternWriter,
+                              imgUrl: patternProvider.searchedPatterns[patternKey]!.patternImg,
+                              title: patternProvider.searchedPatterns[patternKey]!.patternName,
+                              body: patternProvider.searchedPatterns[patternKey]!.patternWriter,
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChangeNotifierProvider(
+                                      create: (_) => PatternDetailProvider(),
+                                      child: PatternDetailScreen(patternKey: patternKey),
+                                    ),
+                                  ),
+                                );
+
+                                patternProvider.getPatterns();
+                              },
                             ),
                           );
-                        }),
+                        }).toList(),
                       )
                     : Column(
-                        children: List.generate(patternProvider.patterns.length, (index) {
+                        children: patternProvider.patterns.keys.map((patternKey) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                             child: SmallImgListItemWidget(
-                              imgUrl: patternProvider.patterns[index].patternImg,
-                              title: patternProvider.patterns[index].patternName,
-                              body: patternProvider.patterns[index].patternWriter,
+                              imgUrl: patternProvider.patterns[patternKey]!.patternImg,
+                              title: patternProvider.patterns[patternKey]!.patternName,
+                              body: patternProvider.patterns[patternKey]!.patternWriter,
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChangeNotifierProvider(
+                                      create: (_) => PatternDetailProvider(),
+                                      child: PatternDetailScreen(patternKey: patternKey),
+                                    ),
+                                  ),
+                                );
+
+                                patternProvider.getPatterns();
+                              },
                             ),
                           );
-                        }),
+                        }).toList(),
                       ),
               ],
             ),
