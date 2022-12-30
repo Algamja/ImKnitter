@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:im_knitter/enum/filter_type.dart';
 import 'package:im_knitter/provider/pattern_list_provider.dart';
+import 'package:im_knitter/provider/pattern_save_provider.dart';
+import 'package:im_knitter/screen/pattern_save_screen.dart';
 import 'package:im_knitter/style/app_color.dart';
 import 'package:im_knitter/widget/common/custom_appbar_widget.dart';
 import 'package:im_knitter/widget/common/search_bar_widget.dart';
@@ -46,7 +48,17 @@ class _PatternListScreenState extends State<PatternListScreen> {
         child: CustomAppbarWidget(title: '패턴 목록'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider(
+                create: (_) => PatternSaveProvider(),
+                child: const PatternSaveScreen(),
+              ),
+            ),
+          );
+        },
         backgroundColor: AppColors.pointColor,
         child: const Icon(
           Icons.add,
