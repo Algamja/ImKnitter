@@ -55,9 +55,11 @@ class _PatternListScreenState extends State<PatternListScreen> {
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                  create: (_) => PatternSaveProvider(),
-                  child: const PatternSaveScreen(),
+                builder: (context) => SafeArea(
+                  child: ChangeNotifierProvider(
+                    create: (_) => PatternSaveProvider(),
+                    child: const PatternSaveScreen(),
+                  ),
                 ),
               ),
             );
@@ -129,9 +131,11 @@ class _PatternListScreenState extends State<PatternListScreen> {
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangeNotifierProvider(
-                                      create: (_) => PatternDetailProvider(),
-                                      child: PatternDetailScreen(patternKey: patternKey),
+                                    builder: (context) => SafeArea(
+                                      child: ChangeNotifierProvider(
+                                        create: (_) => PatternDetailProvider(),
+                                        child: PatternDetailScreen(patternKey: patternKey),
+                                      ),
                                     ),
                                   ),
                                 );
@@ -154,9 +158,11 @@ class _PatternListScreenState extends State<PatternListScreen> {
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangeNotifierProvider(
-                                      create: (_) => PatternDetailProvider(),
-                                      child: PatternDetailScreen(patternKey: patternKey),
+                                    builder: (context) => SafeArea(
+                                      child: ChangeNotifierProvider(
+                                        create: (_) => PatternDetailProvider(),
+                                        child: PatternDetailScreen(patternKey: patternKey),
+                                      ),
                                     ),
                                   ),
                                 );

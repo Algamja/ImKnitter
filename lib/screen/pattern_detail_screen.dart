@@ -55,192 +55,213 @@ class _PatternDetailScreenState extends State<PatternDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 20.0),
-                  IntrinsicWidth(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              '구매처',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  try {
-                                    Uri uri = Uri.parse(patternProvider.pattern.patternShopLink);
-                                    await launchUrl(uri);
-                                  } catch (e) {
-                                    Fluttertoast.showToast(msg: '유효하지 않은 Url입니다');
-                                  }
-                                },
-                                child: Text(
-                                  patternProvider.pattern.patternShopLink,
-                                  style: TextStyle(
-                                    color: AppColors.pointColor,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '구매처',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '작가',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            try {
+                              Uri uri = Uri.parse(patternProvider.pattern.patternShopLink);
+                              await launchUrl(uri);
+                            } catch (e) {
+                              Fluttertoast.showToast(msg: '유효하지 않은 Url입니다');
+                            }
+                          },
+                          child: Text(
+                            patternProvider.pattern.patternShopLink,
+                            style: TextStyle(
+                              color: AppColors.pointColor,
+                              fontSize: 16.0,
                             ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Text(
-                                patternProvider.pattern.patternWriter,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '가격',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Text(
-                                patternProvider.pattern.patternPrice,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '작가',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '원작실',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Column(
-                                children: patternProvider.pattern.patternOriginYarn.map((name) {
-                                  return Text(
-                                    name,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Text(
+                          patternProvider.pattern.patternWriter,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '원작 게이지',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Text(
-                                patternProvider.pattern.patternOriginGauge,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '가격',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '사용 실',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Column(
-                                children: patternProvider.pattern.patternYarn.map((name) {
-                                  return Text(
-                                    name,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Text(
+                          patternProvider.pattern.patternPrice,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
                         ),
-                        const SizedBox(height: 18.0),
-                        Row(
-                          children: [
-                            const Text(
-                              '게이지',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 20.0),
-                            Expanded(
-                              child: Text(
-                                patternProvider.pattern.patternGauge,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '원작실',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: patternProvider.pattern.patternOriginYarn.map((name) {
+                            return Text(
+                              name,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '원작 게이지',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Text(
+                          patternProvider.pattern.patternOriginGauge,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '사용 실',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: patternProvider.pattern.patternYarn.map((name) {
+                            return Text(
+                              name,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18.0),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 100.0,
+                        child: Text(
+                          '게이지',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: Text(
+                          patternProvider.pattern.patternGauge,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 50.0),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       GestureDetector(
                         onTap: () async {
@@ -271,9 +292,11 @@ class _PatternDetailScreenState extends State<PatternDetailScreen> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                create: (_) => PatternSaveProvider(),
-                                child: PatternSaveScreen(patternKey: widget.patternKey),
+                              builder: (context) => SafeArea(
+                                child: ChangeNotifierProvider(
+                                  create: (_) => PatternSaveProvider(),
+                                  child: PatternSaveScreen(patternKey: widget.patternKey),
+                                ),
                               ),
                             ),
                           );

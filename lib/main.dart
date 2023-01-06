@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ChangeNotifierProvider(create: (_) => PatternListProvider(), child: const PatternListScreen()),
+      home: SafeArea(child: ChangeNotifierProvider(create: (_) => PatternListProvider(), child: const PatternListScreen())),
     );
   }
 }
